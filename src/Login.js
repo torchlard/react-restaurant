@@ -29,11 +29,12 @@ const AuthButton = withRouter(
       <button onClick={() => {
         auth.signout(() => history.push("/"))
       }}> Logout </button> 
-    ) : (
-      <button onClick={() => {
-        auth.signin(() => history.push("/home"))
-      }}> Login </button>
-    )
+    ) : ('')
+    // (
+    //   <button onClick={() => {
+    //     auth.signin(() => history.push("/home"))
+    //   }}> Login </button>
+    // )
 )
 
 const PrivateRoute = ({ component: Component, ...rest}) => (
@@ -85,7 +86,7 @@ const LoginEx = () => (
 
     <Route exact path="/" component={Login} />    
     <AuthButton />
-    <PrivateRoute path="/home" component={Home} />
+    <PrivateRoute path="/home" component={Home} logout={auth.signout} />
 
   </Router>
 )

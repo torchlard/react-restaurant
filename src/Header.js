@@ -8,30 +8,33 @@ import {
 } from 'react-router-dom'
 
 
-const HeaderDisplay = (title) => (
-  <div>
-    <button>
-      <Link to="/home">Home</Link>
-    </button>
-    { title }
-    <button onClick={this.logout}>
-      Log out
-    </button>
-  </div>
-) 
-
-const auth = {
-  isAuthenticated: false,
-  signout(cb){
-    this.isAuthenticated = false
-    setTimeout(cb, 50)
-  }
-}
-
 
 class Header extends Component {
   
-}
+  render() {
+    return (
+      <div>
+        <button>
+          <Link to="/home">Home</Link>
+        </button>
+
+        {this.props.title}
+
+        {withRouter(
+          ({history}) =>
+          <button onClick={() => this.props.logout(
+            () => history.push("/")
+          )}> Logout </button>
+        )}
+        
+      </div>
+    ) 
+  }
+} 
+
+
+export default Header
+
 
 
 
