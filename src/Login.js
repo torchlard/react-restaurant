@@ -1,21 +1,48 @@
-import React, { Component } from 'react';
-import {Redirect} from 'react-router-dom'
+import React, {Component} from 'react'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  withRouter
+} from 'react-router-dom'
+import Home from './Home'
 
-let auth = false
 
-class LoginBtn extends Component {
-  constructor(props){
-    auth = true
+const auth = {
+  isAuthenticated: false,
+  signin(cb) {
+    this.isAuthenticated = true
+    setTimeout(cb, 100)
+  },
+  signout(cb){
+    this.isAuthenticated = false
+    setTimeout(cb, 50)
   }
-
-  render(){
-    if (auth)
-      return <Redirect to="/home" />
-    else
-      return <Redirect to="/" />
-  }
-
 }
+
+
+const AuthButton = withRouter(
+  // listen to changes in prop.history
+  ({ history }) =>
+    auth.isAuthenticated ? (
+      <button onClick={() => {
+        auth.signout(() => history.push("/"))
+      }}> Logout </button> 
+    ) : (
+      <button onClick={() => {
+        auth.signin(() => history.push("/home"))
+      }}> Login </button>
+    )
+)
+
+const PrivateRoute = ({ component: Component, ...rest}) => (
+  <Route {...rest} 
+    render = { props => auth.isAuthenticated ? 
+      (<Component {...props} />) : 
+      (<Redirect to="/" />)  }
+  />
+)
 
 
 class Login extends Component {
@@ -24,34 +51,18 @@ class Login extends Component {
     this.state = {username: '', password: ''}
 
     this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    // this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(event){
     this.setState({[event.target.name]: event.target.value})
   }
 
-  // handleSubmit(event){
-  //   event.preventDefault()
-  //   const [username, password] = [this.state.username, this.state.password]
-  //   console.log(username, password)
-  //   this.props.authenticate({username: username, password})
-  //   auth = true
-  // }
 
-  handleSubmit(event){
-
-  }
-
-
-  render(){
-
-    if (auth) return (<Redirect to="/home" />)
-    
-    return (
-      <div>
-        <h2>Restaurant Management System</h2>
-        <form onSubmit={this.handleSubmit}> 
+  render() {
+      return (
+        <div>
+          <h2>Restaurant Management System</h2>
           <label>
             Username: 
             <input required type="text" value={this.state.value} 
@@ -63,18 +74,30 @@ class Login extends Component {
             <input required type="password" value={this.state.password} 
               name="password" onChange={this.handleChange} />
           </label>
-          {/* <input type="submit" value="Submit"/> */}
-        </form>
-          <LoginBtn />
-      </div>
-    )
+        </div>
+      )
   }
-
-
 }
 
 
-export default Login;
+const LoginEx = () => (
+  <Router>
+
+    <Route exact path="/" component={Login} />    
+    <AuthButton />
+    <PrivateRoute path="/home" component={Home} />
+
+  </Router>
+)
+
+
+export default LoginEx
+
+
+
+
+
+
 
 
 
