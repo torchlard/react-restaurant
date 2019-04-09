@@ -3,27 +3,31 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
-  Redirect
+  Redirect,
+  withRouter
 } from 'react-router-dom'
+import {table} from './data/table_data'
 
-
-class Report extends Component {
-
+class Table extends Component {
   constructor(props){
     super(props)
-
+    this.state = {
+      tables: table
+    }
   }
-  
+
   render(){
     return (
       <div>
-        Report
+
       </div>
     )
   }
   
   
 }
+
+
 
 
 
