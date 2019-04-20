@@ -11,6 +11,7 @@ import Home from './Home'
 
 const auth = {
   isAuthenticated: false,
+  role: 'admin',
   signin(cb) {
     this.isAuthenticated = true
     setTimeout(cb, 100)
@@ -25,16 +26,18 @@ const auth = {
 const AuthButton = withRouter(
   // listen to changes in prop.history
   ({ history }) =>
-    auth.isAuthenticated ? (
+    auth.isAuthenticated 
+    ? (
       <button onClick={() => {
         auth.signout(() => history.push("/"))
       }}> Logout </button> 
-    ) : ('')
-    // (
-    //   <button onClick={() => {
-    //     auth.signin(() => history.push("/home"))
-    //   }}> Login </button>
-    // )
+    ) 
+    // : ('')
+    : (
+      <button onClick={() => {
+        auth.signin(() => history.push("/home"))
+      }}> Login </button>
+    )
 )
 
 const PrivateRoute = ({ component: Component, ...rest}) => (
@@ -49,7 +52,9 @@ const PrivateRoute = ({ component: Component, ...rest}) => (
 class Login extends Component {
   constructor(props){
     super(props)
-    this.state = {username: '', password: ''}
+    this.state = {
+      username: '', password: ''
+    }
 
     this.handleChange = this.handleChange.bind(this)
     // this.handleSubmit = this.handleSubmit.bind(this)
@@ -57,6 +62,8 @@ class Login extends Component {
 
   handleChange(event){
     this.setState({[event.target.name]: event.target.value})
+    if (this.state.username == 'worker')
+      auth.role = 'worker';
   }
 
 
@@ -83,10 +90,9 @@ class Login extends Component {
 
 const LoginEx = () => (
   <Router>
-
     <Route exact path="/" component={Login} />    
     <AuthButton />
-    <PrivateRoute path="/home" component={Home} logout={auth.signout} />
+    <PrivateRoute path="/home" component={Home} logout={auth.signout} role={auth.role}/>
 
   </Router>
 )
