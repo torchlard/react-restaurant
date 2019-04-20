@@ -1,11 +1,12 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {BrowserRouter as Router, Route, 
   Link, withRouter} from 'react-router-dom'
 import Header from './Header'
 import ManagementMenu from './manage_menu'
 import ReportMenu from './report_menu'
 
-import {Table} from './Table'
+import Table from './Table'
+import Order from './order'
 
 
 class Home extends Component {
@@ -31,8 +32,12 @@ class Home extends Component {
     } else {
       return (
         <div>
-          <Header logout={this.props.logout} title="Home Page" />
-          <Table /> 
+          <Router>
+            <Header logout={this.props.logout} title="Home Page" />
+            <Route path="/home" component={Table} />
+            <Route path="/order" component={Order} />
+
+          </Router>
         </div> 
       )
     } 

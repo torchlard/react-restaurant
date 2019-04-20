@@ -23,7 +23,7 @@ const ManageMenu = () => (
   </div>
 )
 
-
+export default ManageMenu
 
 
 
