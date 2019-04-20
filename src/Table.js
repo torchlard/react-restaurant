@@ -24,14 +24,14 @@ class Table extends PureComponent {
   //   edit: false
   // }
 
-  // changeItem(idx, item, attr, value){
-  //   this.setState(state => ({
-  //     edit: state.edit,
-  //     tables: state.tables.map( (item,i) => (i === idx )
-  //       ? Object.assign(item, {attrs: value})
-  //       : item )
-  //   }) )
-  // }
+  changeItem(idx, obj){
+    this.setState(state => ({
+      edit: state.edit,
+      tables: state.tables.map( (item,i) => (i === idx )
+        ? Object.assign(item, obj)
+        : item )
+    }) )
+  }
 
   render(){
     if (this.state.edit)
@@ -59,29 +59,19 @@ class Table extends PureComponent {
                   <tr key={item.id}>
                     <td><input type="text" name="tableNo" 
                       value={item.tableNo} {...inputProps}
-                      onChange={event => this.setState(state => ({
-                        edit: state.edit,
-                        tables: state.tables.map((item,i) => (i === idx )
-                          ? Object.assign(item, {tableNo: item.tableNo})
-                          : item )
-                      }) )}
+                      onChange={event => this.changeItem(idx, {'tableNo': event.target.value})
+                    }/></td>
+
+                    <td><input type="number" name="numOfSeat" 
+                      value={item.numOfSeat} {...inputProps} 
+                      onChange={event => this.changeItem(idx, {'numOfSeat': event.target.value}) }
                       /></td>
 
-                    {/* <td><input type="number" name="numOfSeat" 
-                      value={item.numOfSeat} {...inputProps} 
-                      onChange={event => this.changeItem(idx,item,'numOfSeat', item.numOfSeat)}
-                      /></td> */}
-
-                    {/* <td><button onClick={() => this.changeItem(idx, item,'available', 1-item.available)
-                    }>{item.available}</button></td> */}
-
-                    <td>
-                      <button onClick={() => this.setState(state => ({
-                        edit: state.edit,
-                        tables: state.tables.map( (item,i) => (i === idx )
-                          ? Object.assign(item, {available: 1-item.available})
-                          : item )
-                      })) }>{item.available}</button></td>
+                    <td><button onClick={() => {
+                        if (this.state.edit) 
+                          this.changeItem(idx, {'available': 1-item.available})
+                        }
+                    }> {item.available === 1 ? 'Yes' : 'No'}</button></td>
 
                     <Link to="/order" id={item.id}>Go To Table</Link>
 
