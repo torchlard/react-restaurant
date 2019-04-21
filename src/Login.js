@@ -4,98 +4,135 @@ import {
   Route,
   Link,
   Redirect,
-  withRouter
+  withRouter,
+  Switch
 } from 'react-router-dom'
 import Home from './Home'
 
+let auth_signin;
+let auth_signout;
 
-const auth = {
-  isAuthenticated: false,
-  role: 'admin',
-  signin(cb) {
-    this.isAuthenticated = true
-    setTimeout(cb, 100)
-  },
-  signout(cb){
-    this.isAuthenticated = false
-    setTimeout(cb, 50)
-  }
+const LoginButton = withRouter(({history}) => 
+  <button onClick={() => 
+    {if(auth_signin()) history.push("/home")}
+  }>Login</button> )
+
+const LogoutButton = withRouter(({history}) => 
+  <button onClick={() => 
+    { auth_signout(); history.push("/");}
+  }>Logout</button> )  
+
+
+
+const PrivateRoute = ({ component: Component, ...rest}) =>  {
+  const obj = {...rest};
+
+  // if (obj.username === 'admin'){
+  //   console.log('admin')
+  //   obj.changeRole('admin')
+  // }
+  // else {
+  //   console.log('worker')
+  //   obj.changeRole('worker')
+  // }
+  console.log('a')
+
+  return (
+    <Route {...rest} 
+      render = { props => obj.isAuthenticated ? 
+        (<Component {...props} />) :
+        // (<Component {...props} />) 
+        (<Redirect to="/" />)  
+      }
+    />
+  )
 }
 
-
-const AuthButton = withRouter(
-  // listen to changes in prop.history
-  ({ history }) =>
-    auth.isAuthenticated 
-    ? (
-      <button onClick={() => {
-        auth.signout(() => history.push("/"))
-      }}> Logout </button> 
-    ) 
-    // : ('')
-    : (
-      <button onClick={() => {
-        auth.signin(() => history.push("/home"))
-      }}> Login </button>
-    )
-)
-
-const PrivateRoute = ({ component: Component, ...rest}) => (
-  <Route {...rest} 
-    render = { props => auth.isAuthenticated ? 
-      (<Component {...props} />) : 
-      (<Redirect to="/" />)  }
-  />
-)
 
 
 class Login extends Component {
   constructor(props){
-    super(props)
+    super(props);
     this.state = {
-      username: '', password: ''
+      tmpUsername: '', tmpPassword: '',
     }
 
-    this.handleChange = this.handleChange.bind(this)
+    // this.handleChange = this.handleChange.bind(this)
     // this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+  // componentDidMount(){
+  //   if (this.state.tmpUsername === 'admin')
+  //     this.changeRole('admin')
+  //   else
+  //     this.changeRole('worker')
+  // }
+
   handleChange(event){
-    this.setState({[event.target.name]: event.target.value})
-    if (this.state.username == 'worker')
-      auth.role = 'worker';
+    this.props.changeName({[event.target.name]: event.target.value})
+    // this.setState({[event.target.name]: event.target.value})
+
+    // if (this.state.tmpUsername === 'admin'){
+    //   console.log('admin')
+    //   this.props.changeRole('admin')
+    // }
+    // else{
+    //   console.log('worker')
+    //   this.props.changeRole('worker')
+    // }
+
+      // this.setState(state => Object.assign(state, {role: 'admin'}))
+      // this.setState(state => Object.assign(state, {role: 'worker'}))
   }
 
 
   render() {
-      return (
-        <div>
-          <h2>Restaurant Management System</h2>
-          <label>
-            Username: 
-            <input required type="text" value={this.state.value} 
-              name = "username"
-              onChange={this.handleChange} />
-          </label>
-          <label>
-            Password:
-            <input required type="password" value={this.state.password} 
-              name="password" onChange={this.handleChange} />
-          </label>
-        </div>
-      )
+    return (
+      <div>
+        <h2>Restaurant Management System</h2>
+        <label>
+          Username: 
+          <input required type="text" value={this.props.username} 
+            name = "username"
+            onChange={(event) => this.handleChange(event)} />
+        </label>
+        <label>
+          Password:
+          <input required type="password" value={this.props.password} 
+            name="password" onChange={(event) => this.handleChange(event)} />
+        </label>
+      </div>
+    )
   }
 }
 
 
-const LoginEx = () => (
-  <Router>
-    <Route exact path="/" component={Login} />    
-    <AuthButton />
-    <PrivateRoute path="/home" component={Home} logout={auth.signout} role={auth.role}/>
+class LoginEx extends Component {
+  constructor(props){
+    super(props);
+    auth_signin = props.signin;
+    auth_signout = props.signout;
+  }
+  render(){
+    return(
+      <Router>
+        <Route exact path="/" render={props => <Login {...this.props} />} />    
+        {/* {this.props.isAuthenticated ? <LoginButton /> : <LogoutButton/> } */}
+        <Switch>
+          <Route exact path="/" component={LoginButton} />
+          <Route path="/" component={LogoutButton} />
+        </Switch>
 
-  </Router>
-)
+        <PrivateRoute path="/home" 
+          component={Home}
+          // render={props => <Home {...this.props} /> }
+          {...this.props}
+           />
+
+      </Router>
+    )
+  }
+}
 
 
 export default LoginEx

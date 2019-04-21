@@ -4,8 +4,7 @@ class Order extends PureComponent {
   render(){
     return (
       <div>
-        My Order is with id
-        {this.props.id}
+        My Order is with id {this.props.match.params.id}
       </div>
     )
   }

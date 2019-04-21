@@ -10,9 +10,9 @@ import Order from './order'
 
 
 class Home extends Component {
-  // constructor(props){
-  //   super(props);
-  // }
+  constructor(props){
+    super(props);
+  }
   
   render() {
     if (this.props.role === 'admin'){
@@ -25,7 +25,7 @@ class Home extends Component {
   
           <Route path="/management" component={ManagementMenu} />
           <Route path="/report" component={ReportMenu} />
-          <Route path="/table" component={Table} />
+          <Route path="/table" component={Table} role={this.props.role}/>
     
         </Router>
       )
@@ -34,8 +34,9 @@ class Home extends Component {
         <div>
           <Router>
             <Header logout={this.props.logout} title="Home Page" />
-            <Route path="/home" component={Table} />
-            <Route path="/order" component={Order} />
+            <Route path="/home" component={Table} role={this.props.role}/>
+            <Route path="/order/:id" component={Order} />
+            {/* <Table /> */}
 
           </Router>
         </div> 

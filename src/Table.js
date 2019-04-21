@@ -41,11 +41,13 @@ class Table extends PureComponent {
 
     return (
       <div>
-        <button onClick={() => this.setState(state => ({
-          edit: !state.edit,
-          tables: state.tables
-        })) }>
-          {this.state.edit ? 'Edit' : 'Read only'}</button>
+        {this.props.role === 'admin' ?
+          <button onClick={() => this.setState(state => ({
+            edit: !state.edit,
+            tables: state.tables
+          })) }>{this.state.edit ? 'Edit' : 'Read only'}</button>
+          : '' }
+
         <table>
           <thead>
             <tr>
@@ -73,7 +75,8 @@ class Table extends PureComponent {
                         }
                     }> {item.available === 1 ? 'Yes' : 'No'}</button></td>
 
-                    <Link to="/order" id={item.id}>Go To Table</Link>
+                    { this.props.role === 'admin' ? '' : 
+                      <Link to={`/order/${item.id}`}>Go To Table</Link>}
 
                     {this.state.edit 
                       ? <button onClick={() => 
@@ -91,6 +94,14 @@ class Table extends PureComponent {
     )
   }
 }
+
+// const TableEx = () => (
+//   <Router>
+//     <Route path="/home" component={Table} />
+//     <Route path=""
+//   </Router>
+// )
+
 
 export default Table;
 
