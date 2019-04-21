@@ -11,15 +11,15 @@ import Table from './Table'
 import Menu from './Menu'
 
 
-const ManageMenu = () => (
+const ManageMenu = props => (
   <div>
     <Link to="/management/user">Edit user</Link>
     <Link to="/management/menu">Edit menu</Link>
-    <Link to="/management/tables">Edit table</Link>
+    <Link to="/management/table">Edit table</Link>
 
-    <Route exact path="/management/user" component={User} role="management" />
-    <Route exact path="/management/menu" component={Menu} role="management" />
-    <Route exact path="/management/table" component={Table} role="management" />
+    {/* <Route exact path="/management/user" component={User} {...props} />
+    <Route exact path="/management/menu" component={Menu} {...props} />
+    <Route exact path="/management/table" component={Table} {...props} /> */}
   </div>
 )
 

@@ -31,7 +31,6 @@ class App extends Component {
       this.setState(state => Object.assign(state, {isAuthenticated: false, role: ''}))
       return false
     }
-
   }
 
   signout(cb){

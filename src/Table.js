@@ -19,10 +19,6 @@ class Table extends PureComponent {
       edit: false
     }
   }
-  // state = {
-  //   tables: table,
-  //   edit: false
-  // }
 
   changeItem(idx, obj){
     this.setState(state => ({

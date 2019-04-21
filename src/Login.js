@@ -26,22 +26,11 @@ const LogoutButton = withRouter(({history}) =>
 
 const PrivateRoute = ({ component: Component, ...rest}) =>  {
   const obj = {...rest};
-
-  // if (obj.username === 'admin'){
-  //   console.log('admin')
-  //   obj.changeRole('admin')
-  // }
-  // else {
-  //   console.log('worker')
-  //   obj.changeRole('worker')
-  // }
-  console.log('a')
-
+  
   return (
     <Route {...rest} 
-      render = { props => obj.isAuthenticated ? 
-        (<Component {...props} />) :
-        // (<Component {...props} />) 
+      render = { () => obj.isAuthenticated ? 
+        (<Component {...obj} />) :
         (<Redirect to="/" />)  
       }
     />
@@ -56,33 +45,10 @@ class Login extends Component {
     this.state = {
       tmpUsername: '', tmpPassword: '',
     }
-
-    // this.handleChange = this.handleChange.bind(this)
-    // this.handleSubmit = this.handleSubmit.bind(this)
   }
-
-  // componentDidMount(){
-  //   if (this.state.tmpUsername === 'admin')
-  //     this.changeRole('admin')
-  //   else
-  //     this.changeRole('worker')
-  // }
 
   handleChange(event){
     this.props.changeName({[event.target.name]: event.target.value})
-    // this.setState({[event.target.name]: event.target.value})
-
-    // if (this.state.tmpUsername === 'admin'){
-    //   console.log('admin')
-    //   this.props.changeRole('admin')
-    // }
-    // else{
-    //   console.log('worker')
-    //   this.props.changeRole('worker')
-    // }
-
-      // this.setState(state => Object.assign(state, {role: 'admin'}))
-      // this.setState(state => Object.assign(state, {role: 'worker'}))
   }
 
 
@@ -116,18 +82,14 @@ class LoginEx extends Component {
   render(){
     return(
       <Router>
-        <Route exact path="/" render={props => <Login {...this.props} />} />    
-        {/* {this.props.isAuthenticated ? <LoginButton /> : <LogoutButton/> } */}
+        <Route exact path="/" render={() => <Login {...this.props} />} />    
+
         <Switch>
           <Route exact path="/" component={LoginButton} />
           <Route path="/" component={LogoutButton} />
         </Switch>
 
-        <PrivateRoute path="/home" 
-          component={Home}
-          // render={props => <Home {...this.props} /> }
-          {...this.props}
-           />
+        <PrivateRoute path="/home" component={Home} {...this.props}/>
 
       </Router>
     )

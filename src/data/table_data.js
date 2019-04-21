@@ -4,13 +4,13 @@ export const table =
   "id": 1, 
   "tableNo": "T1",
   "numOfSeat": 10,
-  "available": 1
+  "available": 0
  },
  {
   "id": 2,
   "tableNo": "T2",
   "numOfSeat": 8,
-  "available": 1
+  "available": 0
  },
  {
   "id": 3,
@@ -22,7 +22,7 @@ export const table =
   "id": 4,
   "tableNo": "T4",
   "numOfSeat": 4,
-  "available": 0
+  "available": 1
  },
  {
   "id": 5,
@@ -34,7 +34,7 @@ export const table =
   "id": 6,
   "tableNo": "T6",
   "numOfSeat": 4,
-  "available": 0
+  "available": 1
  },
  {
   "id": 7,
@@ -46,7 +46,7 @@ export const table =
   "id": 8,
   "tableNo": "T8",
   "numOfSeat": 6,
-  "available": 0
+  "available": 1
  },
  {
   "id": 9,
@@ -58,13 +58,13 @@ export const table =
   "id": 10,
   "tableNo": "T10",
   "numOfSeat": 2,
-  "available": 0
+  "available": 1
  },
  {
   "id": 11,
   "tableNo": "T11",
   "numOfSeat": 5,
-  "available": 0
+  "available": 1
  },
  {
   "id": 12,
@@ -88,36 +88,6 @@ export const table =
   "id": 15,
   "tableNo": "T15",
   "numOfSeat": 4,
-  "available": 1
- },
- {
-  "id": 16,
-  "tableNo": "T16",
-  "numOfSeat": 3,
-  "available": 0
- },
- {
-  "id": 17,
-  "tableNo": "T17",
-  "numOfSeat": 3,
-  "available": 0
- },
- {
-  "id": 18,
-  "tableNo": "T18",
-  "numOfSeat": 4,
-  "available": 0
- },
- {
-  "id": 19,
-  "tableNo": "T19",
-  "numOfSeat": 4,
-  "available": 1
- },
- {
-  "id": 20,
-  "tableNo": "T20",
-  "numOfSeat": 6,
   "available": 1
  }
 ]
