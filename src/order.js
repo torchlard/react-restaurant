@@ -32,8 +32,9 @@ class Order extends PureComponent {
 
   deleteOrder(orderId){
     const orders = this.state.orders.filter(i => i.id != orderId);
-    this.setState(state => Object.assign(state, {orders: orders}));
-    fn.deleteOrder(orderId);
+    this.setState(state => ({orders: orders}) )
+    // this.setState(state => Object.assign(state, {orders: orders}));
+    fn.deleteOrder(orderId)
   }
 
   render(){

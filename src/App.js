@@ -20,15 +20,18 @@ class App extends Component {
 
   signin(cb) {
     if (this.state.username === 'admin'){
-      this.setState(state => Object.assign(state, {isAuthenticated: true, role: 'admin'}))
+      this.setState(state => ({isAuthenticated: true, role: 'admin'}))
+      // this.setState(state => Object.assign(state, {isAuthenticated: true, role: 'admin'}))
       return true
     }
     else if (this.state.username === 'worker'){
-      this.setState(state => Object.assign(state, {isAuthenticated: true, role: 'worker'}))
+      this.setState(state => ({isAuthenticated: true, role: 'worker'}))
+      // this.setState(state => Object.assign(state, {isAuthenticated: true, role: 'worker'}))
       return true
     }
     else {
-      this.setState(state => Object.assign(state, {isAuthenticated: false, role: ''}))
+      this.setState(state => ({isAuthenticated: false, role: ''}))
+      // this.setState(state => Object.assign(state, {isAuthenticated: false, role: ''}))
       return false
     }
   }
