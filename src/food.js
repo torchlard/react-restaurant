@@ -15,10 +15,7 @@ class Food extends Component {
     }
   }
 
-
-
   render(){
-
     const filterLayout = {
       display: 'flex',
       flexDirection: 'row'

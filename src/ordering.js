@@ -1,6 +1,17 @@
-import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
+import React, {Component, PureComponent} from 'react'
+import {Link, withRouter} from 'react-router-dom'
 import Food from './food'
+
+let updateOrder;
+let final_orders = [];
+
+const ToOrderButton = withRouter( ({history}) => 
+  <button onClick={() => {
+    updateOrder(final_orders);
+    history.push("/order")
+  }}>Confirm</button>
+)
+
 
 class Ordering extends Component {
   constructor(props){
@@ -8,6 +19,7 @@ class Ordering extends Component {
     this.state = {
       orderList: []
     }
+    updateOrder = props.updateOrder
   }
 
   addOrder(id, foodName, price){
@@ -24,6 +36,10 @@ class Ordering extends Component {
     })
   }
 
+  componentDidUpdate(){
+    final_orders = this.state.orderList
+  }
+
 
   render(){
     const mainLayout = {
@@ -38,7 +54,8 @@ class Ordering extends Component {
       <div style={mainLayout}>
         <div style={group1}>
           <h3>Order List</h3>    
-          <p>Table No: {}</p>
+          <p>Table No: {this.state.tableNo}</p>
+
           {this.orderList.map(i => (
             <div>
               <p>{i.foodName}</p>
@@ -57,7 +74,8 @@ class Ordering extends Component {
 
           <p>Total: ${this.state.orderList.reduce(
             (i,j) => i.price*i.quantity + j.price*j.quantity, 0) }</p>
-          <Link to={`/order`}>Confirm</Link>
+
+          <ToOrderButton />
         </div>
 
         <Food style={group1} addOrder={addOrder} />
@@ -70,7 +88,7 @@ class Ordering extends Component {
 }
 
 
-
+export default Ordering;
 
 
 

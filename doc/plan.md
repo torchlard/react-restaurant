@@ -9,7 +9,11 @@
       /management/table
     /report
 
-    /order
+    /order/:tableId
+      /ordering
+        <Food />
+
+
 
 
 

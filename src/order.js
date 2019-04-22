@@ -3,14 +3,18 @@ import {Link} from 'react-router-dom'
 import fn from './server/server_order'
 
 
+
 class Order extends PureComponent {
 
   constructor(props){
     super(props);
     this.state = {
       orders: [],
-      tableId: props.match.params.tableId,
-      masterOrderId: -1
+      tableId: props.tableId,
+      masterOrderId: -1,
+      completed: false,
+      paid: 0,
+      change: 0
     }
   }
 
@@ -20,14 +24,10 @@ class Order extends PureComponent {
 
   componentDidMount(){
     const {masterOrderId, orders} = fn.getTableOrders(this.state.tableId);
-    this.setState(state => ({
+    this.setState({
       orders: orders,
-      tableId: state.tableId,
-      masterOrderId: masterOrderId,
-      completed: false,
-      paid: 0,
-      change: 0
-    }))
+      masterOrderId: masterOrderId
+    })
   }
 
   deleteOrder(orderId){
@@ -35,6 +35,22 @@ class Order extends PureComponent {
     this.setState(state => ({orders: orders}) )
     // this.setState(state => Object.assign(state, {orders: orders}));
     fn.deleteOrder(orderId)
+  }
+
+  updateOrder(orders){
+    this.setState(state => {
+      let orderList = state.orderList;
+      orders.map(i => {
+        let idx = orderList.findIndex(j => j.id === i.id);
+        if (idx !== -1){
+          orderList[idx].qty += i.quantity;
+        } else {
+          orderList.push({orderId: i.id, qty: i.quantity, 
+            foodName: i.foodName, price: i.price})
+        }
+      })
+      return {orderList: orderList};
+    })
   }
 
   render(){
@@ -62,6 +78,7 @@ class Order extends PureComponent {
         <p>Total: { sumPrice() }</p>
 
         <Link to={`/ordering/${this.state.masterOrderId}`}>New Order</Link>
+
         <button onClick={}>Checkout</button>
         <button onClick={}>Revert Checkout</button>
 
@@ -69,6 +86,14 @@ class Order extends PureComponent {
         <p>Change: {this.state.change}</p>
       </div>
     )
+  }
+}
+
+class OrderEx extends PureComponent {
+  constructor(props){
+    this.state = {
+      tableId: props.match.params.tableId,
+    }
   }
 }
 
