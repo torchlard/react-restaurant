@@ -53,7 +53,8 @@ class Food extends Component {
                 (this.state.fCategory==='All' ? i : i.category===this.state.fCategory) &&
                 (this.state.fName==='' ? i : i.foodName===this.state.fFoodName) &&
                 (this.state.fLowPrice === -1 ? i : i.price >= this.state.fLowPrice) &&
-                (this.state.fHighPrice === -1 ? i : i.price <= this.state.fHighPrice)
+                (this.state.fHighPrice === -1 ? i : i.price <= this.state.fHighPrice) &&
+                (i.quantity > 0)
               ).map(
                 i => (
                   <tr key={i.foodID} onClick={() => this.props.addOrder(i.foodName, i.price) } >

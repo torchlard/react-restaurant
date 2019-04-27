@@ -1,6 +1,9 @@
 import orig_order_data, { order } from '../data/order_data'
 import orig_masterOrder from '../data/master_order_data'
 import orig_food_data from '../data/food_data'
+import foodFn from './server_food'
+
+// [{id, quantity, master_order_id, food_id}, ...]
 
 let [order_data, masterOrder, food_data] = [orig_order_data, orig_masterOrder, orig_food_data];
 
@@ -21,7 +24,12 @@ const fn = {
   'deleteOrder': (orderId) => {
     const idx = order_data.findIndex(i => i.id === orderId);
     order_data.splice(idx,1)
-  }
+  },
+  'addOrders': orders => {
+    order_data.push(orders);
+    foodFn.
+  } 
+  
 }
 
 

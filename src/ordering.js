@@ -1,6 +1,7 @@
 import React, {Component, PureComponent} from 'react'
 import {Link, withRouter} from 'react-router-dom'
 import Food from './food'
+import fn from './server/server_order'
 
 let updateOrder;
 let final_orders = [];
@@ -17,6 +18,7 @@ class Ordering extends Component {
   constructor(props){
     super(props)
     this.state = {
+      // [{id, foodName, price, quantity}]
       orderList: []
     }
     updateOrder = props.updateOrder
@@ -31,7 +33,6 @@ class Ordering extends Component {
       } else {
         orderList.push({id: id, foodName: foodName, price: price, quantity: 1})
       }
-
       return orderList;
     })
   }

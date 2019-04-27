@@ -38,6 +38,12 @@ class Order extends PureComponent {
   }
 
   updateOrder(orders){
+    // send added orders to server
+    const invalid_orders = fn.addOrders(orders)
+    if (invalid_orders.length > 0)
+      return invalid_orders;
+
+    // update local order list
     this.setState(state => {
       let orderList = state.orderList;
       orders.map(i => {
@@ -50,7 +56,8 @@ class Order extends PureComponent {
         }
       })
       return {orderList: orderList};
-    })
+    });
+    return [];
   }
 
   render(){
