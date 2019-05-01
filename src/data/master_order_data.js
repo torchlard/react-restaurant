@@ -1,3 +1,5 @@
+// state: serving, checkout, completed
+
 export const masterOrder = [
 {
   "id": 1,
@@ -7,7 +9,7 @@ export const masterOrder = [
   "price": 15,
   "staff_id": 1,
   "table_id": 1,
-  "completed": 1
+  "status": 'completed'
 },
 {
   "id": 2,
@@ -17,7 +19,7 @@ export const masterOrder = [
   "price": 0,
   "staff_id": -1,
   "table_id": 2,
-  "completed": 0
+  "status": "serving"
 },
 {
   "id": 3,
@@ -27,7 +29,7 @@ export const masterOrder = [
   "price": 0,
   "staff_id": -1,
   "table_id": 3,
-  "completed": 0
+  "status": "serving"
 },
 {
   "id": 4,
@@ -37,7 +39,7 @@ export const masterOrder = [
   "price": 0,
   "staff_id": -1,
   "table_id": 1,
-  "completed": 0
+  "status": "serving"
 }
 ] 
 

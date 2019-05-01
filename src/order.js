@@ -11,8 +11,9 @@ class Order extends PureComponent {
     this.state = {
       orders: [],
       tableId: props.tableId,
+      tableNo: '',
       masterOrderId: -1,
-      completed: false,
+      status: "serving",
       paid: 0,
       change: 0
     }
@@ -23,10 +24,11 @@ class Order extends PureComponent {
   }
 
   componentDidMount(){
-    const {masterOrderId, orders} = fn.getTableOrders(this.state.tableId);
+    const {masterOrderId, orders, tableNo} = fn.getTableOrders(this.state.tableId);
     this.setState({
       orders: orders,
-      masterOrderId: masterOrderId
+      masterOrderId: masterOrderId,
+      tableNo: tableNo
     })
   }
 
@@ -39,9 +41,9 @@ class Order extends PureComponent {
 
   updateOrder(orders){
     // send added orders to server
+    // {id, maxQty}
     const invalid_orders = fn.addOrders(orders)
-    if (invalid_orders.length > 0)
-      return invalid_orders;
+    if (invalid_orders.length > 0) return invalid_orders;
 
     // update local order list
     this.setState(state => {
@@ -49,7 +51,7 @@ class Order extends PureComponent {
       orders.map(i => {
         let idx = orderList.findIndex(j => j.id === i.id);
         if (idx !== -1){
-          orderList[idx].qty += i.quantity;
+          orderList[idx].ordered_qty += i.quantity;
         } else {
           orderList.push({orderId: i.id, qty: i.quantity, 
             foodName: i.foodName, price: i.price})
@@ -63,19 +65,23 @@ class Order extends PureComponent {
   render(){
     return (
       <div>
+        <p>Table No: {this.state.tableNo}</p>
         <table>
           <thead>
             <tr>
               <th>Food Name</th>
-              <th>Quantity</th>
+              <th>ORdered Qty</th>
+              <th>Arrived Qty</th>
               <th>Price($)</th>
             </tr>
           </thead>
+
           <tbody>
             {this.state.orders.map((item, idx) => (
               <tr key={item.id}>
                 <td>{item.foodName}</td>
-                <td>{item.qty}</td>
+                <td>{item.ordered_qty}</td>
+                <td>{item.arrived_qty}</td>
                 <td>{item.price}</td>
                 <button onClick={this.deleteOrder(item.id,idx)}>Delete</button>
               </tr>
@@ -86,11 +92,20 @@ class Order extends PureComponent {
 
         <Link to={`/ordering/${this.state.masterOrderId}`}>New Order</Link>
 
-        <button onClick={}>Checkout</button>
+        <button onClick={() => {
+            this.setState({status: "checkout"})
+            fn.checkout(this.state.masterOrderId)
+          }}>Checkout</button>
         <button onClick={}>Revert Checkout</button>
 
-        <p>Customer Paid: {this.state.paid}</p>
-        <p>Change: {this.state.change}</p>
+        
+        {
+          this.state.status === 'serving' ? '' :
+          <div>
+            <p>Customer Paid: {this.state.paid}</p>
+            <p>Change: {this.state.change}</p>
+          </div>
+        }
       </div>
     )
   }
